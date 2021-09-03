@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Table from "./components/Table";
+import Popup from "./components/Popup";
 import Form from "./components/Form";
-import Item from "./components/Item";
 import { Priorities } from "./Helpers";
 function App() {
   let initItems = JSON.parse(localStorage.getItem("items"));
@@ -8,6 +9,10 @@ function App() {
     initItems = [];
   }
   const [items, setItems] = useState(initItems);
+  const [isOpen, setIsOpen] = useState(false);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(initItems ? items : []));
   }, [items, initItems]);
@@ -19,49 +24,27 @@ function App() {
     setItems(remainingItems);
   };
   return (
-    <div className="container">
-      <div className="row">
-        <h2 className="center">Testing app</h2>
-      </div>
-      <div className="row">
-        <select className="u-full-width" name="priority">
-          <option>Select priority</option>
-          {Object.keys(Priorities).map((key, index) => (
-            <option key={index} value={key}>
-              {Priorities[key]}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="row">
-        <div className="six columns">
-          <Form saveItem={saveItem} priorities={Priorities} />
+    <>
+      <div className="container">
+        <div className="row">
+          <h1>TODO</h1>
+          <button
+            type="button"
+            className="button-primary"
+            onClick={togglePopup}
+          >
+            Add activity
+          </button>
+
+          {isOpen && (
+            <Popup togglePopup={togglePopup}>
+              <Form saveItem={saveItem} priorities={Priorities} />
+            </Popup>
+          )}
         </div>
-        <div className="six columns">
-          <table className="u-full-width">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Priority</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.length > 0 ? (
-                items.map((item) => (
-                  <Item key={item.id} item={item} removeItem={removeItem} />
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="4">Not activities added yet</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <Table items={items} removeItem={removeItem} />
       </div>
-    </div>
+    </>
   );
 }
 
