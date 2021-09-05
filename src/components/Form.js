@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-const Form = ({ saveItem, priorities }) => {
+import Alert from "./Alert";
+const Form = ({ saveItem, priorities, togglePopup }) => {
   const initialState = {
     title: "",
     description: "",
     priority: "",
   };
   const [item, setItem] = useState(initialState);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const updateState = (e) => {
     setItem({
       ...item,
@@ -15,15 +18,33 @@ const Form = ({ saveItem, priorities }) => {
   };
   const addItem = (e) => {
     e.preventDefault();
+    for (let key of Object.keys(item)) {
+      if (item[key].trim() === "") {
+        setError(true);
+        return;
+      }
+    }
+
     item.id = uuidv4();
     saveItem(item);
     setItem(initialState);
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+      togglePopup();
+    }, 300);
   };
   const { title, description, priority } = item;
   return (
     <>
       <form onSubmit={addItem}>
         <h2>Form Todo</h2>
+        {error ? (
+          <Alert message="all elements are required" classType="error" />
+        ) : null}
+        {success ? (
+          <Alert message="Register successful" classType="success" />
+        ) : null}
         <div>
           <label>Item:</label>
           <input

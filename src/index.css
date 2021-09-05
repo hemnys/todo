@@ -50,3 +50,18 @@ code {
   border: 1px solid #999;
   font-size: 20px;
 }
+.alert {
+  margin: 0;
+  padding: 0.7em;
+  text-transform: capitalize;
+  text-align: center;
+  font-weight: bold;
+}
+.alert.error {
+  background: #ff0000;
+  color: #fff;
+}
+.alert.success {
+  background: #008000;
+  color: #fff;
+}

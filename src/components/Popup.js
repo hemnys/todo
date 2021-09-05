@@ -1,6 +1,5 @@
 import React from "react";
 const Popup = ({ togglePopup, children }) => {
-  console.log(children);
   return (
     <div className="popup-box">
       <div className="box">

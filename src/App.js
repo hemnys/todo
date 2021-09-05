@@ -38,7 +38,11 @@ function App() {
 
           {isOpen && (
             <Popup togglePopup={togglePopup}>
-              <Form saveItem={saveItem} priorities={Priorities} />
+              <Form
+                saveItem={saveItem}
+                priorities={Priorities}
+                togglePopup={togglePopup}
+              />
             </Popup>
           )}
         </div>
