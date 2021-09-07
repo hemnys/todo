@@ -1,7 +1,7 @@
 import React from "react";
 import Item from "./Item";
 
-const Table = ({ items, removeItem }) => {
+const Table = ({ items, removeItem, fetchItem }) => {
   return (
     <>
       <table className="u-full-width">
@@ -16,7 +16,12 @@ const Table = ({ items, removeItem }) => {
         <tbody>
           {items.length > 0 ? (
             items.map((item) => (
-              <Item key={item.id} item={item} removeItem={removeItem} />
+              <Item
+                key={item.id}
+                item={item}
+                removeItem={removeItem}
+                fetchItem={fetchItem}
+              />
             ))
           ) : (
             <tr>

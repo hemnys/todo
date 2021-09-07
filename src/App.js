@@ -10,8 +10,12 @@ function App() {
   }
   const [items, setItems] = useState(initItems);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentItem, setICurrentItem] = useState({});
   const togglePopup = () => {
     setIsOpen(!isOpen);
+    if (Object.keys(currentItem).length > 0) {
+      setICurrentItem({});
+    }
   };
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(initItems ? items : []));
@@ -22,6 +26,11 @@ function App() {
   const removeItem = (id) => {
     let remainingItems = items.filter((item) => item.id !== id);
     setItems(remainingItems);
+  };
+  const fetchItem = (id) => {
+    let currentItem = items.find((item) => item.id === id);
+    setICurrentItem(currentItem);
+    togglePopup();
   };
   return (
     <>
@@ -39,6 +48,7 @@ function App() {
           {isOpen && (
             <Popup togglePopup={togglePopup}>
               <Form
+                currentItem={currentItem}
                 saveItem={saveItem}
                 priorities={Priorities}
                 togglePopup={togglePopup}
@@ -46,7 +56,7 @@ function App() {
             </Popup>
           )}
         </div>
-        <Table items={items} removeItem={removeItem} />
+        <Table items={items} removeItem={removeItem} fetchItem={fetchItem} />
       </div>
     </>
   );

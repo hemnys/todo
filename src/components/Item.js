@@ -1,6 +1,6 @@
 import React from "react";
 
-const Item = ({ item, removeItem }) => {
+const Item = ({ item, removeItem, fetchItem }) => {
   const { id, title, description, priority } = item;
   return (
     <tr>
@@ -8,6 +8,9 @@ const Item = ({ item, removeItem }) => {
       <td>{description}</td>
       <td>{priority}</td>
       <td>
+        <button className="button-primary" onClick={() => fetchItem(id)}>
+          Edit
+        </button>
         <button className="button-danger" onClick={() => removeItem(id)}>
           Remove
         </button>

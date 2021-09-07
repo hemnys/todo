@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Alert from "./Alert";
-const Form = ({ saveItem, priorities, togglePopup }) => {
+const Form = ({ currentItem, saveItem, priorities, togglePopup }) => {
   const initialState = {
     title: "",
     description: "",
     priority: "",
   };
-  const [item, setItem] = useState(initialState);
+
+  const currentState = {
+    ...initialState,
+    ...currentItem,
+  };
+
+  const [item, setItem] = useState(currentState);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+
   const updateState = (e) => {
     setItem({
       ...item,
@@ -24,7 +31,6 @@ const Form = ({ saveItem, priorities, togglePopup }) => {
         return;
       }
     }
-
     item.id = uuidv4();
     saveItem(item);
     setItem(initialState);
@@ -32,8 +38,9 @@ const Form = ({ saveItem, priorities, togglePopup }) => {
     setTimeout(() => {
       setSuccess(false);
       togglePopup();
-    }, 300);
+    }, 500);
   };
+
   const { title, description, priority } = item;
   return (
     <>
@@ -67,6 +74,7 @@ const Form = ({ saveItem, priorities, togglePopup }) => {
           ></textarea>
         </div>
         <div>
+          {priority}
           <select
             className="u-full-width"
             name="priority"
@@ -77,7 +85,7 @@ const Form = ({ saveItem, priorities, togglePopup }) => {
               <option
                 key={index}
                 value={key}
-                selected={priority === priorities[key] ? "selected" : null}
+                selected={priority === key ? "selected" : null}
               >
                 {priorities[key]}
               </option>
