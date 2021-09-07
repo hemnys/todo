@@ -74,7 +74,6 @@ const Form = ({ currentItem, saveItem, priorities, togglePopup }) => {
           ></textarea>
         </div>
         <div>
-          {priority}
           <select
             className="u-full-width"
             name="priority"
