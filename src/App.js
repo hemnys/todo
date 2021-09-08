@@ -32,6 +32,14 @@ function App() {
     setICurrentItem(currentItem);
     togglePopup();
   };
+  const updateItem = (currentItem) => {
+    const { id } = currentItem;
+    let indexItem = items.findIndex((item) => item.id === id);
+    for (let key of Object.keys(items[indexItem])) {
+      items[indexItem][key] = currentItem[key];
+    }
+    setItems(items);
+  };
   return (
     <>
       <div className="container">
@@ -52,6 +60,7 @@ function App() {
                 saveItem={saveItem}
                 priorities={Priorities}
                 togglePopup={togglePopup}
+                updateItem={updateItem}
               />
             </Popup>
           )}

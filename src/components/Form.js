@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Alert from "./Alert";
-const Form = ({ currentItem, saveItem, priorities, togglePopup }) => {
+const Form = ({
+  currentItem,
+  saveItem,
+  priorities,
+  togglePopup,
+  updateItem,
+}) => {
   const initialState = {
     title: "",
     description: "",
@@ -23,28 +29,49 @@ const Form = ({ currentItem, saveItem, priorities, togglePopup }) => {
       [e.target.name]: e.target.value,
     });
   };
-  const addItem = (e) => {
-    e.preventDefault();
+  const validateData = (item) => {
     for (let key of Object.keys(item)) {
       if (item[key].trim() === "") {
         setError(true);
-        return;
+        return false;
       }
     }
-    item.id = uuidv4();
-    saveItem(item);
-    setItem(initialState);
-    setSuccess(true);
-    setTimeout(() => {
-      setSuccess(false);
-      togglePopup();
-    }, 500);
+    setError(false);
+    return true;
+  };
+  const delay = () => {
+    setSuccess(false);
+    togglePopup();
+  };
+  const updatingItem = (item) => {
+    if (validateData(item)) {
+      updateItem(item);
+      setSuccess(true);
+      setTimeout(delay, 500);
+    }
+  };
+  const savingItem = (item) => {
+    if (validateData(item)) {
+      item.id = uuidv4();
+      saveItem(item);
+      setItem(initialState);
+      setSuccess(true);
+      setTimeout(delay, 500);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (item.id) {
+      return updatingItem(item);
+    }
+    return savingItem(item);
   };
 
   const { title, description, priority } = item;
   return (
     <>
-      <form onSubmit={addItem}>
+      <form onSubmit={handleSubmit}>
         <h2>Form Todo</h2>
         {error ? (
           <Alert message="all elements are required" classType="error" />
@@ -78,14 +105,11 @@ const Form = ({ currentItem, saveItem, priorities, togglePopup }) => {
             className="u-full-width"
             name="priority"
             onChange={updateState}
+            defaultValue={priority}
           >
-            <option>Select priority</option>
+            <option value="">Select priority</option>
             {Object.keys(priorities).map((key, index) => (
-              <option
-                key={index}
-                value={key}
-                selected={priority === key ? "selected" : null}
-              >
+              <option key={index} value={key}>
                 {priorities[key]}
               </option>
             ))}
