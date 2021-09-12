@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Alert from "./Alert";
+import PropTypes from "prop-types";
 const Form = ({
   currentItem,
   saveItem,
@@ -124,5 +125,11 @@ const Form = ({
     </>
   );
 };
-
+Form.propTypes = {
+  currentItem: PropTypes.object,
+  saveItem: PropTypes.func.isRequired,
+  priorities: PropTypes.object,
+  togglePopup: PropTypes.func.isRequired,
+  updateItem: PropTypes.func.isRequired,
+};
 export default Form;

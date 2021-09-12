@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 const Item = ({ item, removeItem, fetchItem }) => {
   const { id, title, description, priority } = item;
   return (
@@ -18,5 +18,9 @@ const Item = ({ item, removeItem, fetchItem }) => {
     </tr>
   );
 };
-
+Item.propTypes = {
+  item: PropTypes.object.isRequired,
+  removeItem: PropTypes.func.isRequired,
+  fetchItem: PropTypes.func.isRequired,
+};
 export default Item;

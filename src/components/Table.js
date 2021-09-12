@@ -1,6 +1,6 @@
 import React from "react";
 import Item from "./Item";
-
+import PropTypes from "prop-types";
 const Table = ({ items, removeItem, fetchItem }) => {
   return (
     <>
@@ -33,5 +33,9 @@ const Table = ({ items, removeItem, fetchItem }) => {
     </>
   );
 };
-
+Table.propTypes = {
+  items: PropTypes.array.isRequired,
+  removeItem: PropTypes.func.isRequired,
+  fetchItem: PropTypes.func.isRequired,
+};
 export default Table;

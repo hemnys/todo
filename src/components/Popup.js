@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 const Popup = ({ togglePopup, children }) => {
   return (
     <div className="popup-box">
@@ -11,5 +12,8 @@ const Popup = ({ togglePopup, children }) => {
     </div>
   );
 };
-
+Popup.propTypes = {
+  togglePopup: PropTypes.func.isRequired,
+  children: PropTypes.object.isRequired,
+};
 export default Popup;
